@@ -62,7 +62,7 @@ public class WrapperService
     private boolean requestAndCacheIcs(String type, int id)
     {
         try {
-            String url = "http://spielerplus-calendar/" + type + "/" + id + "/";
+            String url = "http://spielerplus-calendar:5000/" + type + "/" + id + "/";
             logger.info("Requesting " + url);
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()

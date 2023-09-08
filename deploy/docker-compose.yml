@@ -6,7 +6,7 @@ services:
     container_name: spielerplus-calendar
     restart: always
     ports:
-      - "5001:5000"
+      - "5000:5000"
     volumes:
       - ./config.json:/app/config.json:ro
   spielerplus-calendar-wrapper:
@@ -14,4 +14,4 @@ services:
     container_name: spielerplus-calendar-wrapper
     restart: always
     ports:
-      - "5000:5000"
+      - "5001:8080"

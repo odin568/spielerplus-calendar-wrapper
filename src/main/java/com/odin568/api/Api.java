@@ -20,13 +20,13 @@ public class Api {
     @Autowired
     private WrapperService wrapperService;
 
-    @GetMapping(value = {"/api/team/{id}/", "/api/team/{id}"}, produces = "text/calendar")
+    @GetMapping(value = {"/team/{id}/", "/team/{id}"}, produces = "text/calendar")
     public ResponseEntity<Resource> team(@PathVariable("id") int id)
     {
         return handleRequest("team", id);
     }
 
-    @GetMapping(value = {"/api/personal/{id}/", "/api/personal/{id}"}, produces = "text/calendar")
+    @GetMapping(value = {"/personal/{id}/", "/personal/{id}"}, produces = "text/calendar")
     public ResponseEntity<Resource> personal(@PathVariable("id") int id)
     {
         return handleRequest("personal", id);

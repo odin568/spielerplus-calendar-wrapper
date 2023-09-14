@@ -53,13 +53,3 @@ jobs:
           build-args: BUILDX_QEMU_ENV=true
           tags: odin568/spielerplus-calendar-wrapper:${{ env.RELEASE_VERSION }}
 
-########## Final release
-
-      - name: Release
-        uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/')
-        with:
-          files: |
-            build/release/*.zip
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

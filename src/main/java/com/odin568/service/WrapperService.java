@@ -1,18 +1,18 @@
 package com.odin568.service;
 
-import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
+import org.springframework.boot.actuate.health.Health;
+import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.Instant;
+import java.util.Date;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -20,10 +20,10 @@ import java.util.concurrent.TimeUnit;
 
 
 @Service
-public class WrapperService
-{
+public class WrapperService implements HealthIndicator {
     private final Logger logger = LoggerFactory.getLogger(WrapperService.class);
     private final ConcurrentMap<String, ConcurrentMap<Integer, String>> cache = new ConcurrentHashMap<>();
+    private Date lastCacheUpdate;
 
     public Optional<String> GetIcs(String type, int id)
     {
@@ -57,6 +57,9 @@ public class WrapperService
                 break;
             }
         }
+
+        if (id > 0)
+            lastCacheUpdate = Date.from(Instant.now());
     }
 
     private boolean requestAndCacheIcs(String type, int id)
@@ -98,4 +101,16 @@ public class WrapperService
     }
 
 
+    @Override
+    public Health health()
+    {
+        Health.Builder status = Health.up();
+
+        if (lastCacheUpdate != null)
+            status.up().withDetail("lastUpdate", lastCacheUpdate);
+        else
+            status.outOfService();
+
+        return status.build();
+    }
 }
